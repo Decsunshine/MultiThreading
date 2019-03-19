@@ -30,9 +30,26 @@
 
 - (void)startThreadWithRunLoop
 {
+    //应用场景:经常在后台进行耗时操作,如:监控联网状态,扫描沙盒等 不希望线程处理完事件就销毁,保持常驻状态
+    
+    //addPort:添加端口(就是source)  forMode:设置模式
     NSPort *workPort = [NSMachPort port];
     [[NSRunLoop currentRunLoop] addPort:workPort forMode:NSDefaultRunLoopMode];
     [[NSRunLoop currentRunLoop] run];
+
+    /*
+     //另外两种启动方式
+     [NSDate distantFuture]:遥远的未来  这种写法跟上面的run是一个意思
+     [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+     
+     不设置模式
+     [[NSRunLoop currentRunLoop] runUntilDate:[NSDate distantFuture]];
+     */
+}
+
+- (void)stopThreadWithRunLoop
+{
+    [NSThread exit];
 }
 
 - (void)NSObjectInstanceMethod
@@ -68,6 +85,7 @@
     return @[
              @"StackSize",
              @"Start With RunLoop",
+             @"Stop With RunLoop",
              @"performSelector",
              ];
 }
@@ -109,6 +127,10 @@
             break;
         }
         case 2: {
+            [self stopThreadWithRunLoop];
+            break;
+        }
+        case 3: {
             [self NSObjectInstanceMethod];
             break;
         }
