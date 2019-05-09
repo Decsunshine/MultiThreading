@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "GCDDemoViewController.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -24,7 +25,8 @@
 
 - (void)threadWithStackSize
 {
-    int array[1024000];
+//    int array[1024000];
+    int array[724290];
     array[1] = 100;
 }
 
@@ -87,6 +89,7 @@
              @"Start With RunLoop",
              @"Stop With RunLoop",
              @"performSelector",
+             @"GCDDemo",
              ];
 }
 
@@ -118,7 +121,7 @@
         case 0: {
             self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(threadWithStackSize) object:nil];
             // 如果不设置栈区内存大小限制，会有栈区内存溢出，初始为 512KB
-            [self.thread setStackSize:2048000];
+//            [self.thread setStackSize:2048000];
             [self.thread start];
             break;
         }
@@ -132,6 +135,11 @@
         }
         case 3: {
             [self NSObjectInstanceMethod];
+            break;
+        }
+        case 4: {
+            GCDDemoViewController *GCDViewContrller = [[GCDDemoViewController alloc] init];
+            [self.navigationController pushViewController:GCDViewContrller animated:YES];
             break;
         }
         default:
